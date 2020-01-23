@@ -1,0 +1,13 @@
+{
+  "name": "test-on-puppeteer",
+  "type": "module",
+  "module": "./runner.js",
+  "engines": {
+    "node": ">=13.2.0"
+  },
+  "devDependencies": {
+    "colors": "*",
+    "local-web-server": "*",
+    "puppeteer": "*"
+  }
+}
