@@ -1,8 +1,8 @@
 {
   "name": "test-on-puppeteer",
   "type": "module",
-  "module": "./runner.js",
   "main": "./runner.js",
+  "license": "GPL-3.0",
   "engines": {
     "node": ">=13.2.0"
   },
@@ -10,5 +10,7 @@
     "colors": "*",
     "local-web-server": "*",
     "puppeteer": "*"
-  }
+  },
+  "repository": "github:bunsanweb/test-on-puppeteer",
+  "description": "Browser JavaScript test environment with local-web-server and puppeteer"
 }
