@@ -11,6 +11,11 @@
     "local-web-server": "*",
     "puppeteer": "*"
   },
+  "scripts": {
+    "t:symlinks": "node test/symlinks/site/run.js",
+    "t:consoles-and-fail-case": "node test/consoles-and-fail-case/run.js || true",
+    "test": "npm run t:symlinks && npm run t:consoles-and-fail-case"
+  },
   "repository": "github:bunsanweb/test-on-puppeteer",
   "description": "Browser JavaScript test environment with local-web-server and puppeteer"
 }
