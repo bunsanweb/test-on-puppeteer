@@ -2,6 +2,7 @@
   "name": "test-on-puppeteer",
   "type": "module",
   "module": "./runner.js",
+  "main": "./runner.js",
   "engines": {
     "node": ">=13.2.0"
   },
