@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Mocha on browser</title>
+    <script type="module">
+// mocha setup
+import "https://unpkg.com/mocha/mocha.js";
+mocha.setup("bdd");
+    </script>
+    <script type="module">
+// mocha test code
+import "https://unpkg.com/chai/chai.js";
+
+describe("Array", function () {
+  it("slice", function () {
+    chai.assert.equal([1,2,3].slice(1), [2, 3], "slice failed");
+    //chai.assert.deepEqual([1,2,3].slice(1), [2, 3], "slice failed");
+  });
+});
+    </script>
+    <script type="module">
+// mocha run
+import {MochaConsoleReporter} from "./mocha-console-reporter.js";
+
+mocha.checkLeaks();
+mocha.reporter(MochaConsoleReporter).run();
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
