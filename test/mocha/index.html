@@ -16,6 +16,10 @@ describe("Array", function () {
     chai.assert.equal([1,2,3].slice(1), [2, 3], "slice failed");
     //chai.assert.deepEqual([1,2,3].slice(1), [2, 3], "slice failed");
   });
+  it.skip("foo", function () {});
+  before("abc", function () {
+    
+  });
 });
     </script>
     <script type="module">
@@ -24,6 +28,7 @@ import {MochaConsoleReporter} from "./mocha-console-reporter.js";
 
 mocha.checkLeaks();
 mocha.reporter(MochaConsoleReporter).run();
+//mocha.reporter(Mocha.reporters.TAP).run();
     </script>
   </head>
   <body>

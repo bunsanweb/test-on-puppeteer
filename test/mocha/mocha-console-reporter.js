@@ -2,8 +2,9 @@ export const MochaConsoleReporter = class {
   constructor(runner) {
     const state = {
       start: 0, 
-      suites: 0, tests: 0, passes: 0, fails: 0,
+      suites: 0, tests: 0, passes: 0, fails: 0, pendings: 0,
     };
+    const errors = [];
     
     runner.on("start", () => {
       state.start = Date.now();
@@ -11,12 +12,16 @@ export const MochaConsoleReporter = class {
     runner.on("end", () => {
       const msec = Date.now() - state.start;
       
-      console.info("Total", state.suites, "suites");
       console.info("Total", state.tests, "tests");
-      console.info("Test passes:", state.passes);
-      if (state.fails) console.error("Test fails:", state.fails);
-      else console.info("Test fails:", state.fails);
+      console.info("- pass:", state.passes);
+      if (state.pendings) console.warn("- pending:", state.pendings);
+      if (state.fails) console.error("- fail:", state.fails);
+      else console.info("- fails:", state.fails);
       console.info("duration:", msec / 1000, "s");
+      for (const [test, error] of errors) {
+        const title = `[${test.parent.title}: ${test.title}] ${error.message}`;
+        console.assert(false, `${title}\n`, error.stack);
+      }
     });
     // waiting/ready: when delay option
     runner.on("waiting", () => {
@@ -26,21 +31,22 @@ export const MochaConsoleReporter = class {
     
     runner.on("suite", suite => {
       state.suites++;
-      // skip root suite
-      if (state.suites !== 1) console.info("Run suite:", suite.title);
+      if (state.suites === 1) return; // skip root suite
+      console.info(`${state.suites - 1}) ${suite.title}`);
     });
     runner.on("suite end", suite => {
     });
 
     // brefore/after/beforeEach/afterEach: as hook
     runner.on("hook", hook => {
+      console.info(`- ${hook.title}`);
     });
     runner.on("hook end", hook => {
     });
     
     runner.on("test", test => {
       state.tests++;
-      console.info("Run test:", test.title);
+      console.info(`- ${test.title}`);
     });
     runner.on("test end", test => {
       
@@ -52,16 +58,14 @@ export const MochaConsoleReporter = class {
     });
     runner.on("fail", (test, error) => {
       state.fails++;
-      
-      console.assert(
-        false, `${test.parent.title} - ${test.title}\n`,
-        "- expected", error.expected, "\n",
-        "- actual:", error.actual, "\n",
-        error.stack);
+      console.error(`  + ${error.message}`);
+      errors.push([test, error]);
     });
     
     // it.skip()/test.skip():
     runner.on("pending", test => {
+      state.pendings++;
+      console.info(`- (pending) ${test.title}`);
     });
     // with retry count?
     runner.on("retry", (test, error) => {
