@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="icon" href="data:,">
+    <title>Source Site</title>
+    <script type="module">
+const main = async () => {
+  const res = await fetch(document.querySelector("a[href]").href);
+  const doc = document.implementation.createHTMLDocument();
+  doc.documentElement.innerHTML = await res.text();
+  console.assert(doc.title === "External Site", "doc.title");
+  console.assert(doc.body.textContent.trim() === "Hello CORS", "doc.body");
+  console.info(doc.title);
+  console.info(doc.body.textContent);
+};
+main().catch(console.error);
+    </script>
+  </head>
+  <body>
+    <a href="http://localhost:9100/">external</a>
+  </body>
+</html>

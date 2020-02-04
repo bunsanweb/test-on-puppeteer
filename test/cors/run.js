@@ -1,8 +1,11 @@
-import {run} from "../../../runner.js";
+import {run} from "../../runner.js";
 
 run([
-  [import.meta.url, 9000],
+  [new URL("./site1/", import.meta.url), 9000],
+  [new URL("./site2/", import.meta.url), 9100],
 ], {
+  //browser: "firefox",
+  //browser: "webkit",
   browser: "all",
   launch: {
     //headless: false, appMode: true, devtools: true,

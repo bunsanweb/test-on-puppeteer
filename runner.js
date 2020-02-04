@@ -5,17 +5,30 @@ import process from "process";
 
 import colors from "colors";
 import LocalWebServer from "local-web-server";
-import puppeteer from "puppeteer";
+import playwright from "playwright";
 
 export const run = async (urlPorts, opts = {}) => {
+  let fails = 0;
+  if (opts.browser === "all") {
+    fails += await runOnBrowser("chromium", urlPorts, opts);
+    fails += await runOnBrowser("webkit", urlPorts, opts);
+    fails += await runOnBrowser("firefox", urlPorts, opts);
+  } else {
+    fails += await runOnBrowser(opts.browser || "chromium", urlPorts, opts);
+  }
+  if (fails && opts.errorExit !== false) process.exit(1);
+  return fails;
+};
+export const runOnBrowser = async (type, urlPorts, opts = {}) => {
+  console.info(colors.bgWhite(colors.black(`[Run on ${type}]`)));
   const initUrl = `http://localhost:${urlPorts[0][1]}/`;
   const wss = urlPorts.map(([url, port]) => runLWS(url, port));
-  const browser = await puppeteer.launch(opts.launch);
+  const browser = await playwright[type].launch(opts.launch);
   const guard = newGuard();
   const fails = {asserts: 0};
   const queue = newQueue();
   try {
-    const page = await browser.newPage();
+    const page = await browser.defaultContext().newPage();
     await page.exposeFunction("finish", guard.finish);
     page.on("error", err => console.error(err));
     page.on("pageerror", err => console.error(err));
@@ -63,10 +76,10 @@ export const run = async (urlPorts, opts = {}) => {
   
   if (fails.asserts) {
     console.error(colors.red(`FAIL`), `${fails.asserts} AssertionError`);
-    process.exit(1);
   } else {
     console.error(colors.green(`OK`), `Passed`);
   }
+  return fails.asserts;
 };
 
 export const runLWS = (url, port) => {

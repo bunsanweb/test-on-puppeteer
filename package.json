@@ -9,13 +9,16 @@
   "dependencies": {
     "colors": "*",
     "local-web-server": "*",
-    "puppeteer": "*"
+    "playwright": "*"
   },
   "scripts": {
-    "t:mocha": "node test/mocha/run.js || true",
+    "t:consoles-and-fail-case": "node test/consoles-and-fail-case/run.js",
+    "t:mocha": "node test/mocha/run.js",
+    "t:cors": "node test/cors/run.js",
     "t:symlinks": "node test/symlinks/site/run.js",
-    "t:consoles-and-fail-case": "node test/consoles-and-fail-case/run.js || true",
-    "test": "npm run t:mocha && npm run t:symlinks && npm run t:consoles-and-fail-case"
+    "test:success": "npm run t:symlinks && npm run t:cors",
+    "test:assertion": "npm run t:consoles-and-fail-case && npm run t:mocha",
+    "test": "npm run test:success && npm run test:assertion"
   },
   "repository": "github:bunsanweb/test-on-puppeteer",
   "description": "Browser JavaScript test environment with local-web-server and puppeteer"
