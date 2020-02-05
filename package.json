@@ -14,9 +14,10 @@
   "scripts": {
     "t:consoles-and-fail-case": "node test/consoles-and-fail-case/run.js",
     "t:mocha": "node test/mocha/run.js",
+    "t:es-proposals": "node test/es-proposals/run.js",
     "t:cors": "node test/cors/run.js",
     "t:symlinks": "node test/symlinks/site/run.js",
-    "test:success": "npm run t:symlinks && npm run t:cors",
+    "test:success": "npm run t:symlinks && npm run t:cors && npm run t:es-proposals",
     "test:assertion": "npm run t:consoles-and-fail-case && npm run t:mocha",
     "test": "npm run test:success && npm run test:assertion"
   },

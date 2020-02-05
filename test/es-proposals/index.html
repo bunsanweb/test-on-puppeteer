@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Mocha on browser</title>
+    <script type="module">
+// mocha setup
+import "https://unpkg.com/mocha/mocha.js";
+mocha.setup("bdd");
+    </script>
+    <script type="module">
+import "https://unpkg.com/chai/chai.js";
+import "./es2016.js";
+import "./es2017.js";
+import "./es2018.js";
+import "./es2019.js";
+import "./es2020.js";
+    </script>
+    <script type="module">
+// mocha run
+import {MochaConsoleReporter} from "./mocha-console-reporter.js";
+
+mocha.checkLeaks();
+mocha.reporter(MochaConsoleReporter).run();
+//mocha.reporter(Mocha.reporters.TAP).run();
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
