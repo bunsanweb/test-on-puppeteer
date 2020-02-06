@@ -58,29 +58,20 @@ describe("ES2018", function () {
       }
     })().then(done, done);
   });
-  it("for await (const X of ...)", function (done) {
+  it("async generator/for-await-of loop", function (done) {
     chai.assert.equal(typeof Symbol.asyncIterator, "symbol");
-    
-    const newQueue = () => {
-      const [gets, polls] = [[], []];
-      const next = () => new Promise(
-        get => polls.length > 0 ? polls.shift()(get) : gets.push(get));
-      const poll = () => new Promise(
-        poll => gets.length > 0 ? poll(gets.shift()) : polls.push(poll));
-      const push = value => poll().then(get => get({value, done: false}));
-      const close = () => poll().then(get => get({done: true}));
-      return {[Symbol.asyncIterator]() {return this;}, next, push, close};
-    };
 
-    const queue = newQueue();
+    const gen = async function* () {
+      yield Promise.resolve(1);
+      yield await Promise.resolve(2);
+      yield 3;
+    };
+    const g = gen();
+    chai.assert.equal(typeof g[Symbol.asyncIterator], "function");
     
     (async () => {
-      queue.push(1);
-      queue.push(2);
-      queue.push(3);
-      queue.close();
       const r = [];
-      for await (const v of queue) r.push(v);
+      for await (const v of g) r.push(v);
       chai.assert.deepEqual(r, [1, 2, 3]);
     })().then(done, done);
   });
