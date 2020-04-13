@@ -27,14 +27,15 @@ export const runOnBrowser = async (type, urlPorts, opts = {}) => {
   const guard = newGuard();
   const fails = {asserts: 0};
   const queue = newQueue();
+  const context = await browser.newContext();
   try {
-    const page = await browser.defaultContext().newPage();
+    const page = await context.newPage();
     await page.exposeFunction("finish", guard.finish);
     page.on("error", err => console.error(err));
     page.on("pageerror", err => console.error(err));
     page.on("console", msg => {
       if (msg.type() === "assert") fails.asserts++;
-      //consoleOut(msg).catch(error => 0);
+      //consoleOut(msg).catch(console.error);
       queue.push(msg);
     });
 
@@ -70,6 +71,7 @@ export const runOnBrowser = async (type, urlPorts, opts = {}) => {
       await page.close();
     }
   } finally {
+    await context.close();
     await browser.close();
     wss.forEach(ws => ws.server.close());
   }

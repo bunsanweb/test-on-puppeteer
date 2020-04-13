@@ -10,7 +10,7 @@ run([
     //args: ["--disable-web-security"],
   },
   goto: {
-    //waitUntil: "networkidle0",
+    waitUntil: "networkidle0",
     //timeout: 300 * 1000,
   },
   //timeout: 300 * 1000,  
