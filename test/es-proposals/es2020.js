@@ -22,10 +22,11 @@ describe("ES2020", function () {
     for (const k in {foo: 1, bar: "a", buzz: true}) r.push(k);
     chai.assert.deepEqual(r, ["foo", "bar", "buzz"]);
   });
-  it.skip("O?.p", function () {
-    //firefox not support ?. operator syntax
+  it("O?.p", function () {
     const o1 = null;
-    //chai.assert.strictEqual(o1?.foo, undefined);
+    chai.assert.strictEqual(o1?.foo, undefined);
+    const o2 = "";
+    chai.assert.strictEqual(o2?.length, 0);
   });
   it("A ?? B", function () {
     chai.assert.equal(0 ?? 2, 0);
