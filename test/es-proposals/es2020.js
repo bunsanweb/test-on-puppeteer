@@ -33,4 +33,30 @@ describe("ES2020", function () {
     chai.assert.equal(null ?? "a", "a");
     chai.assert.equal(undefined ?? "a", "a");
   });
+  it("Promise.allSettled()", function (done) {
+    (async () => {
+      const r = await Promise.allSettled([
+        Promise.resolve(1),
+        Promise.reject("a"),
+      ]);
+      chai.assert.equal(r.length, 2);
+      chai.assert.equal(r[0].status, "fulfilled");
+      chai.assert.equal(r[0].value, 1);
+      chai.assert.equal(r[1].status, "rejected");
+      chai.assert.equal(r[1].reason, "a");
+    })().then(done, done);
+  });
+  it("String.matchAll()", function () {
+    // no-sideeffect repeated RegExp.exec(s)
+    const r = /(\w+)/g;
+    const s = "abc def ghi";
+    const matches = [...s.matchAll(r)]; // iterator to Array
+    chai.assert.equal(matches.length, 3);
+    chai.assert.equal(matches[0][0], "abc");
+    chai.assert.equal(matches[0].index, 0);
+    chai.assert.equal(matches[1][0], "def");
+    chai.assert.equal(matches[1].index, 4);
+    chai.assert.equal(matches[2][0], "ghi");
+    chai.assert.equal(matches[2].index, 8);
+  });
 });
