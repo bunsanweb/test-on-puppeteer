@@ -76,4 +76,3 @@ describe("ES2018", function () {
     })().then(done, done);
   });
 });
-

@@ -17,10 +17,11 @@ describe("ES2019", function () {
     chai.assert.equal(Symbol.for("bar").description, "bar");
     chai.assert.equal(Symbol.iterator.description, "Symbol.iterator");
   });
-  it("Function.toStrig() from source code slice", function () {
+  it("Function.toStribg() from source code slice", function () {
     chai.assert.equal(((a, b,  )  =>{ }).toString(), "(a, b,  )  =>{ }");
-    // webkit fails space counts between function and ( as single
+    // webkit fails to keep a text between function and ( as single
     //chai.assert.equal((function  (a, b,  ){ }).toString(), "function  (a, b,  ){ }");
+    //chai.assert.equal((function /**/ (a, b,  ){ }).toString(), "function /**/ (a, b,  ){ }");
   });
   it("Object.fromENtries()", function () {
     const o = {foo: 1, bar: "a", buzz: true};

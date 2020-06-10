@@ -7,11 +7,10 @@ describe("ES2020", function () {
       chai.assert.isOk(mod.MochaConsoleReporter);
     })().then(done, done);
   });
-  it.skip("BigInt", function () {
-    //webkit not support bigint syntax
+  it("BigInt", function () {
     chai.assert.isOk(BigInt);
-    //chai.assert.equal(1n + 1n, 2n);
-    //chai.assert.equal(10n ** 20n, 100000000000000000000n);
+    chai.assert.equal(1n + 1n, 2n);
+    chai.assert.equal(10n ** 20n, 100000000000000000000n);
   });
   it("globalThis", function () {
     chai.assert.isOk(globalThis);
