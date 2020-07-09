@@ -7,6 +7,11 @@ describe("ES2020", function () {
       chai.assert.isOk(mod.MochaConsoleReporter);
     })().then(done, done);
   });
+  it("import.meta", function (done) {
+    (async () => {
+    chai.assert.isOk(import.meta);
+    })().then(done, done);
+  });
   it("BigInt", function () {
     chai.assert.isOk(BigInt);
     chai.assert.equal(1n + 1n, 2n);
@@ -58,5 +63,7 @@ describe("ES2020", function () {
     chai.assert.equal(matches[1].index, 4);
     chai.assert.equal(matches[2][0], "ghi");
     chai.assert.equal(matches[2].index, 8);
+    // `r[Symbol.matchAll](s)` is same as `s.matchAll(r)`
+    chai.assert.equal(typeof r[Symbol.matchAll], "function");
   });
 });

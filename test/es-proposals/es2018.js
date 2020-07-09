@@ -5,17 +5,15 @@ describe("ES2018", function () {
     chai.assert.equal(String.raw`\xaa`, "\\xaa");
     chai.assert.equal(`\xaa`, "\xaa");
   });
-  it.skip("/.../s", function () {
+  it("/.../s", function () {
     chai.assert.isOk(/foo.bar/.test("foo bar"));
     chai.assert.isNotOk(/foo.bar/.test("foo\nbar"));
-    // firefox not support s flag syntax yet
-    //chai.assert.isOk(/foo.bar/s.test("foo\nbar"));
+    chai.assert.isOk(/foo.bar/s.test("foo\nbar"));
   });
-  it.skip("/(?<name>...)/", function () {
-    // firefox not support named capture group syntax
-    //const r = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/;
-    //const capture = r.exec("2020-02-01").groups;
-    //chai.assert.deepEqual(capture, {year: "2020", month: "02", day: "01"});
+  it("/(?<name>...)/", function () {
+    const r = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/;
+    const capture = r.exec("2020-02-01").groups;
+    chai.assert.deepEqual(capture, {year: "2020", month: "02", day: "01"});
   });
   it("{...o}", function () {
     const o1 = {foo: 1, bar: "a", buzz: true};
@@ -27,15 +25,14 @@ describe("ES2018", function () {
     chai.assert.deepEqual(o2, {bar: "a"});
   });
   it.skip("/(?<=...).../, /(?<!...).../", function () {
-    // firefox and wekit not support these regex group syntax
+    // WebKit<=14: not support look-behind patterns yet
     //chai.assert.isOk(/(?<!-)\d{4}/.test("1234"));
     //chai.assert.isNotOk(/(?<!-)\d{4}/.test("-1234"));
     //chai.assert.isOk(/(?<=-)\d{4}/.test("-1234"));
     //chai.assert.isNotOk(/(?<=-)\d{4}/.test("1234"));
   });
-  it.skip("//\p{...=...}.../u", function () {
-    // firefox not support unicode property syntax
-    //chai.assert.isOk(/\p{Script=Hiragana}/u.test("あ"));
+  it("//\p{...=...}.../u", function () {
+    chai.assert.isOk(/\p{Script=Hiragana}/u.test("あ"));
   });
   it("Promise.finary()", function (done) {
     (async () => {
